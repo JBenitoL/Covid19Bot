@@ -41,7 +41,7 @@ except:
         try:
             import sampleconfig as cfg
         except:
-            print('\n I need a config file with the token information \n')
+            print('\n I need a config file with the token information please\n')
 
 
 # Enable logging
