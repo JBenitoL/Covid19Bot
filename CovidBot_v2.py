@@ -26,7 +26,8 @@ Basic Echobot example, repeats messages.
 Press Ctrl-C on the command line or send a signal to the process to stop the
 bot.
 """
- 
+# def coronabot(event,context):
+
 import logging
 import telegram
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
@@ -35,13 +36,11 @@ import numpy as np
 import io
 import requests
 import pandas as pd
-try:
-    import databaseconfig as cfg
-except:
-        try:
-            import sampleconfig as cfg
-        except:
-            print('\n I need a config file with the token information please\n')
+import os
+
+
+myToken = os.environ.get('CORONATOKEN')
+
 
 
 # Enable logging
@@ -82,9 +81,10 @@ def echo(update, context):
     if type(answer)== str:
         update.message.reply_text(answer) 
     else:
-        ploteame(answer[0], answer[2], answer[1])
-        pic = "Ploteo.png"
-        context.bot.send_photo(update.message.chat.id , open(pic,'rb'))
+        pic = ploteame(answer[0], answer[2], answer[1])
+        #pic = "Ploteo.png"
+        #context.bot.send_photo(update.message.chat.id , open(pic,'rb'))
+        context.bot.send_photo(update.message.chat.id , photo = pic)
 
     
         
@@ -99,7 +99,7 @@ def main():
     # Create the Updater and pass it your bot's token.
     # Make sure to set use_context=True to use the new context based callbacks
     # Post version 12 this will no longer be necessary
-    updater = Updater(cfg.mysql['token'], use_context=True)
+    updater = Updater(myToken, use_context=True)
 
     
     

@@ -79,8 +79,15 @@ def ploteame(txt, Comunidad, tipo):
     ax.tick_params(labelsize=13)
     ylab = txt+' '+ diarioortotal(tipo) 
     ax.set_ylabel(ylab, fontsize = 13)
-    plt.legend(loc=2, fontsize = 13)       
-    plt.savefig('Ploteo.png')
+    plt.legend(loc=2, fontsize = 13)  
+    plt.tight_layout()     
+    plt.gcf().subplots_adjust(bottom=0.15)
+    #plt.savefig('Ploteo.png')
+    buf = io.BytesIO()
+    plt.savefig(buf, format='png')
+    buf.seek(0)
+
+    return buf
     
 def tipo(txt):
     x = txt.split() 
