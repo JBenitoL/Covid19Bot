@@ -1,4 +1,5 @@
 # Covid19Bot
 Telegram bot for obtaining updated graphs for the covid19. 
 
-Telegram token must be added in the sampleconfig
+An enviroment variable called "CORONATOKEN" must be created with the actual token of the bot
+
