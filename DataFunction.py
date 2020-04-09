@@ -65,18 +65,16 @@ def ploteame(txt, Comunidad, tipo):
         df = df.loc[i][1:np.shape(dfOld)[1]]
         df.index = pd.to_datetime(df.index)    
         if tipo.upper().find('DIA')>-1:
-            #df.diff().plot.bar(label = NombreComunidad, color = cm.tab20(count), ax = ax)
             ax.bar(df.index, df.diff(), color = cm.tab10(count), label = NombreComunidad)
         
      
         elif tipo.upper().find('TOT')>-1:
-            #df.plot(label = NombreComunidad,  color = cm.tab20(count), ax = ax)
             ax.plot(df.index, df, label = NombreComunidad,  color = cm.tab10(count), linewidth=4)
-    #set ticks every week
+    
     ax.xaxis.set_major_locator(mdates.DayLocator(interval=5))
     ax.xaxis.set_minor_locator(mdates.DayLocator(interval=1))
     fig.autofmt_xdate()
-    #set major ticks format
+    
     ax.xaxis.set_major_formatter(mdates.DateFormatter('%b %d'))
     ax.tick_params(labelsize=13)
     ylab = txt+' '+ diarioortotal(tipo) 
@@ -91,6 +89,7 @@ def tipo(txt):
             return 'FALLECIDOS'
         if i.upper().find('CONTAG')>-1 or i.upper().find('INFEC')>-1:
             return 'INFECTADOS'
+    return 0
 
 def diarioortotal(txt):
     x = txt.split() 
@@ -99,6 +98,7 @@ def diarioortotal(txt):
             return 'TOTALES'
         if i.upper().find('DIA')>-1:
             return 'DIARIOS'
+    return 0
 
 def comunidad(txt):
     x = txt.split() 
@@ -123,3 +123,26 @@ def GetStat(txt):
     s = requests.get(url).content
     Stat = pd.read_csv(io.StringIO(s.decode('utf-8')))
     return Stat
+
+
+def keywordDetector(txt):
+    answer= ' '
+    count = 0
+    if not tipo(txt): 
+        count = count +1
+        answer = answer + 'muertos/contagiados '
+    if not diarioortotal(txt):
+        count = count +1
+        answer = answer + 'diario/total '
+    if not comunidad(txt): 
+        count = count +1
+        answer = answer + 'comunidad/es'
+
+    if count == 0:
+        return [tipo(txt), diarioortotal(txt), comunidad(txt)]
+    elif count ==1:
+        return 'Me falta saber el dato de' +answer+'. Escribemelo todo en un mismo mensaje por favor.'
+    elif count == 2:
+        return 'Me faltan los siguientes datos:'+ answer + '. Escribemelo todo en un mismo mensaje por favor.'
+    else:
+        return 'Para que te pueda entender, necesito que me escribas en un mismo mensaje los sigiuentes datos:' +answer

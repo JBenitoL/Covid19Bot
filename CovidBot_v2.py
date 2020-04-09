@@ -75,25 +75,17 @@ def help(update, context):
 
 def echo(update, context):
     """Echo the user message."""
-    
-    
-   
-    
-    
+
     txt = update.message.text
 
-
-    
- 
-    if (tipo(txt)) and (diarioortotal(txt)) and comunidad(txt):
-
-        ploteame(tipo(txt), comunidad(txt), diarioortotal(txt))
-      
+    answer = keywordDetector(txt)
+    if type(answer)== str:
+        update.message.reply_text(answer) 
+    else:
+        ploteame(answer[0], answer[2], answer[1])
         pic = "Ploteo.png"
         context.bot.send_photo(update.message.chat.id , open(pic,'rb'))
-    else:
-        update.message.reply_text('No te he entendido') 
-        logger.info('My Application is launched', extra={'bot': True})
+
     
         
 
