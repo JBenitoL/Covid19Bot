@@ -1,2 +1,2 @@
 # Covid19Bot
-Telegram bot for obtaining update graphs for the covid19
+Telegram bot for obtaining updated graphs for the covid19
